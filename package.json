@@ -1,0 +1,9 @@
+{
+  "name": "hchart",
+  "version": "0.0.0",
+  "description": "HChart",
+  "main": "server.js",
+  "author": {
+    "name": "TENDED-ARCH"
+  }
+}
