@@ -1,83 +1,105 @@
-﻿<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Highstock Example</title>
 
-    <script src="https://code.highcharts.com/highchart.src.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-
+    <style type="text/css">
+    </style>
 </head>
 <body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.src.js"></script>
+    <script src="https://www.highcharts.com/code/highstock.js"></script>
+    <script src="https://www.highcharts.com/code/highcharts-more.js"></script>
+    <script src="https://www.highcharts.com/code/modules/exporting.js"></script>
+    <script src="https://www.highcharts.com/code/modules/export-data.js"></script>
 
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <div id="container" style="height: 400px; min-width: 310px"></div>
+
 
     <script type="text/javascript">
-        $.getJSON(
-            'https://jsonblob.com/api/jsonBlob/7229683b-89cc-11e8-a006-5fc12f890ccc',
-            function (data) {
 
-                Highcharts.chart('container', {
-                    chart: {
-                        zoomType: 'x'
+
+        $.getJSON('https://cdn.rawgit.com/highcharts/highcharts/057b672172ccc6c08fe7dbb27fc17ebca3f5b770/samples/data/large-dataset.json', function (data) {
+
+            // Create a timer
+            var start = +new Date();
+
+            // Create the chart
+            Highcharts.stockChart('container', {
+                chart: {
+                    events: {
+                        load: function () {
+                            if (!window.TestController) {
+                                this.setTitle(null, {
+                                    text: 'Built chart in ' + (new Date() - start) + 'ms'
+                                });
+                            }
+                        }
                     },
+                    zoomType: 'x'
+                },
+
+                rangeSelector: {
+
+                    buttons: [{
+                        type: 'day',
+                        count: 3,
+                        text: '3d'
+                    }, {
+                        type: 'week',
+                        count: 1,
+                        text: '1w'
+                    }, {
+                        type: 'month',
+                        count: 1,
+                        text: '1m'
+                    }, {
+                        type: 'month',
+                        count: 6,
+                        text: '6m'
+                    }, {
+                        type: 'year',
+                        count: 1,
+                        text: '1y'
+                    }, {
+                        type: 'all',
+                        text: 'All'
+                    }],
+                    selected: 3
+                },
+
+                yAxis: {
                     title: {
-                        text: 'USD to EUR exchange rate over time'
-                    },
-                    subtitle: {
-                        text: document.ontouchstart === undefined ?
-                            'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-                    },
-                    xAxis: {
-                        type: 'datetime'
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'Exchange rate'
-                        }
-                    },
-                    legend: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        area: {
-                            fillColor: {
-                                linearGradient: {
-                                    x1: 0,
-                                    y1: 0,
-                                    x2: 0,
-                                    y2: 1
-                                },
-                                stops: [
-                                    [0, Highcharts.getOptions().colors[0]],
-                                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                                ]
-                            },
-                            marker: {
-                                radius: 2
-                            },
-                            lineWidth: 1,
-                            states: {
-                                hover: {
-                                    lineWidth: 1
-                                }
-                            },
-                            threshold: null
-                        }
-                    },
+                        text: 'Temperature (°C)'
+                    }
+                },
 
-                    series: [{
-                        type: 'area',
-                        name: 'USD to EUR',
-                        data: data
-                    }]
-                });
-            }
-        );
+                title: {
+                    text: 'Hourly temperatures in Vik i Sogn, Norway, 2009-2017'
+                },
+
+                subtitle: {
+                    text: 'Built chart in ...' // dummy text to reserve space for dynamic subtitle
+                },
+
+                series: [{
+                    name: 'Temperature',
+                    data: data.data,
+                    pointStart: data.pointStart,
+                    pointInterval: data.pointInterval,
+                    tooltip: {
+                        valueDecimals: 1,
+                        valueSuffix: '°C'
+                    }
+                }]
+
+            });
+        });
+
     </script>
 </body>
 </html>
