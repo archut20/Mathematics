@@ -10,7 +10,7 @@
 
     <style type="text/css">
         .highcharts-point {
-            fill: greenyellow;
+            fill: #e60000;
         }
     </style>
 </head>
@@ -26,14 +26,20 @@
 
 
     <script type="text/javascript">
-        $.getJSON('https://jsonblob.com/api/jsonBlob/45415df5-8a3d-11e8-8a0f-3b0c1d98b822', function (data) {
 
+        Highcharts.theme = {
+            colors: ['#e60000',
+            ],
+        };
+        // Apply the theme
+        Highcharts.setOptions(Highcharts.theme);
+
+
+        $.getJSON('https://jsonblob.com/api/jsonBlob/45415df5-8a3d-11e8-8a0f-3b0c1d98b822', function (data) {
 
             // Create the chart
             Highcharts.stockChart('container', {
-                chart: {
-                    type: 'area'
-                },
+
 
                 rangeSelector: {
                     selected: 1
@@ -43,38 +49,36 @@
                     text: 'Mathematics'
                 },
 
-                yAxis: {
-                    reversed: true,
-                    showFirstLabel: false,
-                    showLastLabel: true
-                },
-
                 series: [{
                     name: 'Mathematics',
                     data: data,
+
+                    type: 'areaspline',
+                    threshold: null,
+                    tooltip: {
+                        valueDecimals: 2
+                    },
                     marker: {
                         enabled: true,
-                        radius: 3,
+                        radius: 3
                     },
-                    threshold: null,
                     fillColor: {
                         linearGradient: {
                             x1: 0,
-                            y1: 1,
+                            y1: 0,
                             x2: 0,
-                            y2: 0
+                            y2: 1
                         },
                         stops: [
                             [0, Highcharts.getOptions().colors[0]],
                             [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                         ]
-                    },
-                    tooltip: {
-                        valueDecimals: 2
                     }
                 }]
             });
         });
+
+
 
     </script>
 </body>
