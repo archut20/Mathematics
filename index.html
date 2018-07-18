@@ -1,12 +1,17 @@
 
+
 <!DOCTYPE HTML>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Highstock Example</title>
+    <link rel="stylesheet" href="https://code.highcharts.com/css/highcharts.css" />
 
     <style type="text/css">
+        .highcharts-point {
+            fill: greenyellow;
+        }
     </style>
 </head>
 <body>
@@ -17,86 +22,57 @@
     <script src="https://www.highcharts.com/code/modules/exporting.js"></script>
     <script src="https://www.highcharts.com/code/modules/export-data.js"></script>
 
-    <div id="container" style="height: 400px; min-width: 310px"></div>
+    <div id="container" style="height: 360px; min-width: 310px"></div>
 
 
     <script type="text/javascript">
+        $.getJSON('https://jsonblob.com/api/jsonBlob/45415df5-8a3d-11e8-8a0f-3b0c1d98b822', function (data) {
 
-
-        $.getJSON('https://cdn.rawgit.com/highcharts/highcharts/057b672172ccc6c08fe7dbb27fc17ebca3f5b770/samples/data/large-dataset.json', function (data) {
-
-            // Create a timer
-            var start = +new Date();
 
             // Create the chart
             Highcharts.stockChart('container', {
                 chart: {
-                    events: {
-                        load: function () {
-                            if (!window.TestController) {
-                                this.setTitle(null, {
-                                    text: 'Built chart in ' + (new Date() - start) + 'ms'
-                                });
-                            }
-                        }
-                    },
-                    zoomType: 'x'
+                    type: 'area'
                 },
 
                 rangeSelector: {
-
-                    buttons: [{
-                        type: 'day',
-                        count: 3,
-                        text: '3d'
-                    }, {
-                        type: 'week',
-                        count: 1,
-                        text: '1w'
-                    }, {
-                        type: 'month',
-                        count: 1,
-                        text: '1m'
-                    }, {
-                        type: 'month',
-                        count: 6,
-                        text: '6m'
-                    }, {
-                        type: 'year',
-                        count: 1,
-                        text: '1y'
-                    }, {
-                        type: 'all',
-                        text: 'All'
-                    }],
-                    selected: 3
-                },
-
-                yAxis: {
-                    title: {
-                        text: 'Temperature (°C)'
-                    }
+                    selected: 1
                 },
 
                 title: {
-                    text: 'Hourly temperatures in Vik i Sogn, Norway, 2009-2017'
+                    text: 'Mathematics'
                 },
 
-                subtitle: {
-                    text: 'Built chart in ...' // dummy text to reserve space for dynamic subtitle
+                yAxis: {
+                    reversed: true,
+                    showFirstLabel: false,
+                    showLastLabel: true
                 },
 
                 series: [{
-                    name: 'Temperature',
-                    data: data.data,
-                    pointStart: data.pointStart,
-                    pointInterval: data.pointInterval,
+                    name: 'Mathematics',
+                    data: data,
+                    marker: {
+                        enabled: true,
+                        radius: 3,
+                    },
+                    threshold: null,
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 1,
+                            x2: 0,
+                            y2: 0
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
                     tooltip: {
-                        valueDecimals: 1,
-                        valueSuffix: '°C'
+                        valueDecimals: 2
                     }
                 }]
-
             });
         });
 
